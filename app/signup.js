@@ -1,7 +1,7 @@
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { Alert, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { registerUser } from '../services/authService';
+import { registerUser } from '../services';
 import styles from '../styles/signupStyles.config';
 
 export default function Signup() {

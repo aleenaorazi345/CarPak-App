@@ -18,7 +18,7 @@ import {
     getUserDetails,
     listenToMessages,
     sendMessage,
-} from '../services/messagingService';
+} from '../services';
 
 const styles = StyleSheet.create({
   container: {

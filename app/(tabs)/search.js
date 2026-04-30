@@ -11,8 +11,7 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
-import { getCars } from '../services/carService';
-import { addToFavorites, isFavorited, removeFromFavorites } from '../services/favoritesService';
+import { getCars, addToFavorites, isFavorited, removeFromFavorites } from '../../services';
 
 const styles = StyleSheet.create({
   container: {

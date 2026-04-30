@@ -10,7 +10,7 @@ import {
     TouchableOpacity,
     View
 } from 'react-native';
-import { getUserFavorites, removeFromFavorites } from '../services/favoritesService';
+import { getUserFavorites, removeFromFavorites } from '../../services';
 
 const styles = StyleSheet.create({
   container: {
