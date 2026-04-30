@@ -68,7 +68,23 @@ export default function TabLayout() {
         }}
       />
 
+      
+
+      {/* UPLOAD TAB WITH PLUS ICON */}
       <Tabs.Screen
+        name="upload"
+        options={{
+          title: 'Upload',
+          tabBarIcon: ({ color, size, focused }) => (
+            <Ionicons 
+              name={focused ? 'add-circle' : 'add-circle-outline'} 
+              size={size + 4} 
+              color={color} 
+            />
+          ),
+        }}
+      />
+<Tabs.Screen
         name="favorites"
         options={{
           title: 'Favorites',
@@ -81,7 +97,6 @@ export default function TabLayout() {
           ),
         }}
       />
-
       <Tabs.Screen
         name="profile"
         options={{

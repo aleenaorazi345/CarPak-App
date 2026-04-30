@@ -1,14 +1,25 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
-
+import { deleteDoc, doc, getFirestore } from 'firebase/firestore';
+import { useState } from 'react';
+import {
+  Alert,
+  Image,
+  Modal,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import styles from '../styles/carDetails.config';
 
 export default function CarDetails() {
   const router = useRouter();
   const { car } = useLocalSearchParams();
+  const [menuVisible, setMenuVisible] = useState(false);
 
   const carData = car ? JSON.parse(car) : null;
+  const db = getFirestore();
 
   if (!carData) {
     return (
@@ -18,10 +29,44 @@ export default function CarDetails() {
     );
   }
 
+  // Handle Delete Car
+  const handleDeleteCar = async () => {
+    Alert.alert(
+      'Delete Car',
+      `Are you sure you want to delete "${carData.name}"?`,
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              await deleteDoc(doc(db, 'Cars', carData.id));
+              Alert.alert('Success', 'Car deleted successfully');
+              router.back();
+            } catch (error) {
+              console.error('Delete error:', error);
+              Alert.alert('Error', 'Failed to delete car');
+            }
+          },
+        },
+      ]
+    );
+    setMenuVisible(false);
+  };
+
+  // Handle Edit Car - Navigate to edit page
+  const handleEditCar = () => {
+    setMenuVisible(false);
+    router.push({
+      pathname: '/editcar',
+      params: { car: JSON.stringify(carData) },
+    });
+  };
+
   return (
     <ScrollView style={styles.container}>
-
-      {/* 🔙 HEADER */}
+      {/* Header with Three Dots */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()}>
           <Ionicons name="arrow-back" size={24} color="#000" />
@@ -29,8 +74,46 @@ export default function CarDetails() {
 
         <Text style={styles.headerTitle}>Car Details</Text>
 
-        <View style={{ width: 24 }} />
+        <TouchableOpacity onPress={() => setMenuVisible(true)}>
+          <Ionicons name="ellipsis-vertical" size={24} color="#000" />
+        </TouchableOpacity>
       </View>
+
+      {/* Three Dots Modal Menu */}
+      <Modal
+        visible={menuVisible}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setMenuVisible(false)}
+      >
+        <TouchableOpacity 
+          style={styles.modalOverlay} 
+          activeOpacity={1} 
+          onPress={() => setMenuVisible(false)}
+        >
+          <View style={styles.modalMenu}>
+            {/* Edit Option */}
+            <TouchableOpacity 
+              style={styles.menuItem} 
+              onPress={handleEditCar}
+            >
+              <Ionicons name="create-outline" size={22} color="#007AFF" />
+              <Text style={styles.menuItemText}>Edit Car Details</Text>
+            </TouchableOpacity>
+
+            <View style={styles.menuDivider} />
+
+            {/* Delete Option */}
+            <TouchableOpacity 
+              style={[styles.menuItem, styles.deleteMenuItem]} 
+              onPress={handleDeleteCar}
+            >
+              <Ionicons name="trash-outline" size={22} color="#FF3B30" />
+              <Text style={[styles.menuItemText, styles.deleteText]}>Delete Car</Text>
+            </TouchableOpacity>
+          </View>
+        </TouchableOpacity>
+      </Modal>
 
       {/* 🚗 IMAGE */}
       <Image
@@ -54,48 +137,25 @@ export default function CarDetails() {
 
       {/* ⚙️ SPECIFICATIONS */}
       <View style={styles.specBox}>
-
         <Text style={styles.sectionTitle}>Specifications</Text>
-
-        <Text style={styles.specText}>
-           Condition: {carData.condition}
-        </Text>
-
-        <Text style={styles.specText}>
-           Fuel Type: {carData.fuelType}
-        </Text>
-
-        <Text style={styles.specText}>
-           Transmission: {carData.transmission}
-        </Text>
-
-        <Text style={styles.specText}>
-           Mileage: {carData.mileage}
-        </Text>
-
-        <Text style={styles.specText}>
-           Engine: {carData.engineCapacity}
-        </Text>
-
-        <Text style={styles.specText}>
-           Year: {carData.year}
-        </Text>
-
+        <Text style={styles.specText}>Condition: {carData.condition}</Text>
+        <Text style={styles.specText}>Fuel Type: {carData.fuelType}</Text>
+        <Text style={styles.specText}>Transmission: {carData.transmission}</Text>
+        <Text style={styles.specText}>Mileage: {carData.mileage}</Text>
+        <Text style={styles.specText}>Engine: {carData.engineCapacity}</Text>
+        <Text style={styles.specText}>Year: {carData.year}</Text>
       </View>
 
       {/* 📝 DESCRIPTION */}
       <View style={styles.descriptionBox}>
         <Text style={styles.sectionTitle}>Description</Text>
-        <Text style={styles.description}>
-          {carData.description}
-        </Text>
+        <Text style={styles.description}>{carData.description}</Text>
       </View>
 
       {/* 📞 CONTACT BUTTON */}
       <TouchableOpacity style={styles.contactButton}>
         <Text style={styles.contactText}>Contact Seller</Text>
       </TouchableOpacity>
-
     </ScrollView>
   );
 }

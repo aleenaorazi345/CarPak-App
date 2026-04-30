@@ -4,6 +4,8 @@ import { useRouter } from 'expo-router';
 import { getAuth, signOut } from 'firebase/auth';
 import { doc, getDoc, getFirestore, setDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
+// Make sure to import AsyncStorage at the top of Profile.js
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   ActivityIndicator,
   Alert,
@@ -306,38 +308,47 @@ export default function Profile({ navigation }) {
     }
   };
 
-  // ✅ FIXED LOGOUT FUNCTION - No navigation errors
-  const handleLogout = () => {
-    Alert.alert(
-      'Logout',
-      'Are you sure you want to logout?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Logout',
-          style: 'destructive',
-          onPress: async () => {
-            try {
-              const auth = getAuth();
-              await signOut(auth);
-              
-              // Clear local state
-              setUserData(null);
-              setProfileImage(null);
-              
-              // Simple navigation to login - works without errors
-              router.replace('/login');
-              
-            } catch (error) {
-              console.error('Logout error:', error);
-              Alert.alert('Error', 'Failed to logout. Please try again.');
-            }
-          },
-        },
-      ]
-    );
-  };
+  
 
+// Then update your handleLogout function
+const handleLogout = () => {
+  Alert.alert(
+    'Logout',
+    'Are you sure you want to logout?',
+    [
+      { text: 'Cancel', style: 'cancel' },
+      {
+        text: 'Logout',
+        style: 'destructive',
+        onPress: async () => {
+          try {
+            const auth = getAuth();
+            
+            // Clear remember me data from AsyncStorage
+            await AsyncStorage.multiRemove(['rememberMe', 'userEmail', 'userPassword']);
+            
+            // Sign out from Firebase
+            await signOut(auth);
+            
+            // Clear local state
+            setUserData(null);
+            setProfileImage(null);
+            
+            // Navigate to login
+            router.replace('/login');
+            
+          } catch (error) {
+            console.error('Logout error:', error);
+            Alert.alert('Error', 'Failed to logout. Please try again.');
+          }
+        },
+      },
+    ]
+  );
+};
+              
+   
+ 
   const handleSettings = () => {
     if (navigation && navigation.navigate) {
       navigation.navigate('Settings');
