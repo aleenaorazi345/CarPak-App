@@ -6,38 +6,50 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-
-        tabBarActiveTintColor: '#000',
-        tabBarInactiveTintColor: '#444',
-
+        
+        // Tab bar colors
+        tabBarActiveTintColor: '#0f172a',
+        tabBarInactiveTintColor: '#666',
+        
+        // Tab bar style - modern design
         tabBarStyle: {
           position: 'absolute',
           bottom: 20,
           left: 20,
           right: 20,
-
-          backgroundColor: '#F4B400', // yellow frame
-          borderRadius: 185,
-          height: 55,
-
-          paddingBottom: 5,
-          paddingTop: 6,
-
+          backgroundColor: '#F4B400',
+          borderRadius: 30,
+          height: 60,
+          paddingBottom: 8,
+          paddingTop: 8,
           borderTopWidth: 0,
-
-          elevation: 9,
+          elevation: 10,
           shadowColor: '#000',
+          shadowOffset: { width: 0, height: 4 },
           shadowOpacity: 0.2,
-          shadowRadius: 10,
+          shadowRadius: 8,
         },
+        
+        // Tab bar label
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: '500',
+        },
+        
+        // Hide tab bar label on some screens (optional)
+        tabBarHideOnKeyboard: true,
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="home" size={size} color={color} />
+          tabBarIcon: ({ color, size, focused }) => (
+            <Ionicons 
+              name={focused ? 'home' : 'home-outline'} 
+              size={size} 
+              color={color} 
+            />
           ),
         }}
       />
@@ -46,8 +58,12 @@ export default function TabLayout() {
         name="search"
         options={{
           title: 'Search',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="search" size={size} color={color} />
+          tabBarIcon: ({ color, size, focused }) => (
+            <Ionicons 
+              name={focused ? 'search' : 'search-outline'} 
+              size={size} 
+              color={color} 
+            />
           ),
         }}
       />
@@ -56,8 +72,12 @@ export default function TabLayout() {
         name="favorites"
         options={{
           title: 'Favorites',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="heart" size={size} color={color} />
+          tabBarIcon: ({ color, size, focused }) => (
+            <Ionicons 
+              name={focused ? 'heart' : 'heart-outline'} 
+              size={size} 
+              color={color} 
+            />
           ),
         }}
       />
@@ -66,8 +86,12 @@ export default function TabLayout() {
         name="profile"
         options={{
           title: 'Profile',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="person" size={size} color={color} />
+          tabBarIcon: ({ color, size, focused }) => (
+            <Ionicons 
+              name={focused ? 'person' : 'person-outline'} 
+              size={size} 
+              color={color} 
+            />
           ),
         }}
       />

@@ -3,7 +3,7 @@ import app from '../firebase/config';
 
 const db = getFirestore(app);
 
-// ADD CAR
+// ADD car
 export const addCar = async (car) => {
   return await addDoc(collection(db, 'cars'), car);
 };
