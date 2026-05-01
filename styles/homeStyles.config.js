@@ -106,7 +106,76 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#777',
   },
+resultCount: {
+  fontSize: 14,
+  color: '#666',
+  marginLeft: 15,  // ← This adds space to the left
+  marginTop: 8,
+  marginBottom: 12,
+},
+// Add these to your homeStyles.config.js
 
+budgetScrollView: {
+  flexGrow: 0,
+},
+
+budgetContainer: {
+  flexDirection: 'row',
+  marginHorizontal: 15,
+  marginTop: 10,
+  marginBottom: 10,
+},
+
+budgetPillActive: {
+  paddingVertical: 10,
+  paddingHorizontal: 20,
+  borderRadius: 25,
+  backgroundColor: '#F4B400',
+  marginRight: 10,
+  shadowColor: '#F4B400',
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.3,
+  shadowRadius: 4,
+  elevation: 3,
+},
+
+budgetPillInactive: {
+  paddingVertical: 10,
+  paddingHorizontal: 20,
+  borderRadius: 25,
+  backgroundColor: '#f0f0f0',
+  marginRight: 10,
+  borderWidth: 1,
+  borderColor: '#e0e0e0',
+},
+
+activeText: {
+  color: '#fff',
+  fontWeight: '600',
+},
+
+inactiveText: {
+  color: '#666',
+  fontWeight: '500',
+},
+
+
+
+emptyContainer: {
+  padding: 40,
+  alignItems: 'center',
+  justifyContent: 'center',
+  backgroundColor: '#f9f9f9',
+  marginHorizontal: 15,
+  marginVertical: 20,
+  borderRadius: 12,
+},
+
+emptyText: {
+  fontSize: 16,
+  color: '#999',
+  textAlign: 'center',
+},
   price: {
     fontWeight: 'bold',
     marginTop: 4,
