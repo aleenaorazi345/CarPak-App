@@ -1,9 +1,9 @@
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
-import { useRouter } from 'expo-router';
+import { useFocusEffect, useRouter } from 'expo-router';
 import { getAuth, signOut } from 'firebase/auth';
 import { doc, getDoc, getFirestore, setDoc } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 // Make sure to import AsyncStorage at the top of Profile.js
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
@@ -228,6 +228,13 @@ export default function Profile({ navigation }) {
     fetchUserData();
   }, []);
 
+  // 🔄 REFRESH DATA WHEN RETURNING FROM SETTINGS
+  useFocusEffect(
+    useCallback(() => {
+      fetchUserData();
+    }, [])
+  );
+
   const fetchUserData = async () => {
     try {
       const auth = getAuth();
@@ -350,11 +357,7 @@ const handleLogout = () => {
    
  
   const handleSettings = () => {
-    if (navigation && navigation.navigate) {
-      navigation.navigate('Settings');
-    } else {
-      router.push('/settings');
-    }
+    router.push('/settings');
   };
 
   const faqData = [

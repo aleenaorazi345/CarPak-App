@@ -1,24 +1,58 @@
-import { FlatList, Text, TouchableOpacity, View } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useRouter } from 'expo-router';
+import { getAuth, signOut } from 'firebase/auth';
+import { Alert, FlatList, Text, TouchableOpacity, View } from 'react-native';
 import { navigationDrawerStyles } from '../styles/navigationDrawerStyles.config';
 
-export default function NavigationDrawer({ onClose, navigation }) {
+export default function NavigationDrawer({ onClose }) {
+  const router = useRouter();
+  const auth = getAuth();
+
   const menuItems = [
-    { name: 'Home', screen: 'Home', icon: '🏠' },
-    { name: 'Favorites', screen: 'Favorites', icon: '❤️' },
-    { name: 'Profile', screen: 'Profile', icon: '👤' },
-    { name: 'Search', screen: 'Search', icon: '🔍' },
-    { name: 'Settings', screen: 'Settings', icon: '⚙️' },
+    { name: 'Home', path: '/(tabs)/', icon: '🏠' },
+    { name: 'Favorites', path: '/(tabs)/favorites', icon: '❤️' },
+    { name: 'Search', path: '/(tabs)/search', icon: '🔍' },
+    { name: 'Profile', path: '/(tabs)/profile', icon: '👤' },
+    { name: 'Settings', path: '/settings', icon: '⚙️' },
   ];
 
-  const handlePress = (screen) => {
+  const handlePress = (path) => {
     onClose();
-    navigation.navigate(screen);
+    router.push(path);
+  };
+
+  const handleLogout = () => {
+    Alert.alert(
+      'Logout',
+      'Are you sure you want to logout?',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Logout',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              onClose();
+              // Clear remember me data from AsyncStorage
+              await AsyncStorage.multiRemove(['rememberMe', 'userEmail', 'userPassword']);
+              // Sign out from Firebase
+              await signOut(auth);
+              // Navigate to login
+              router.replace('/login');
+            } catch (error) {
+              console.error('Logout error:', error);
+              Alert.alert('Error', 'Failed to logout. Please try again.');
+            }
+          },
+        },
+      ]
+    );
   };
 
   const renderMenuItem = ({ item }) => (
     <TouchableOpacity
       style={navigationDrawerStyles.menuItem}
-      onPress={() => handlePress(item.screen)}
+      onPress={() => handlePress(item.path)}
     >
       <Text style={navigationDrawerStyles.menuIcon}>{item.icon}</Text>
       <Text style={navigationDrawerStyles.menuText}>{item.name}</Text>
@@ -40,12 +74,15 @@ export default function NavigationDrawer({ onClose, navigation }) {
         <FlatList
           data={menuItems}
           renderItem={renderMenuItem}
-          keyExtractor={(item) => item.screen}
+          keyExtractor={(item) => item.path}
           scrollEnabled={false}
         />
 
         {/* Logout */}
-        <TouchableOpacity style={navigationDrawerStyles.logoutButton}>
+        <TouchableOpacity
+          style={navigationDrawerStyles.logoutButton}
+          onPress={handleLogout}
+        >
           <Text style={navigationDrawerStyles.logoutText}>🚪 Logout</Text>
         </TouchableOpacity>
       </View>

@@ -1,24 +1,30 @@
+import { AntDesign } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { collection, getDocs } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import {
-  FlatList,
-  Image,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
+    FlatList,
+    Image,
+    ScrollView,
+    Text,
+    TouchableOpacity,
+    View,
 } from 'react-native';
 import { db } from '../../firebase/config';
+import { addToFavorites, isFavorited, removeFromFavorites } from '../../services/favoritesService';
+import { getUserConversations } from '../../services/messagingService';
 import styles from '../../styles/homeStyles.config';
+import MessagesIcon from '../messagesicon';
 import NavigationDrawer from '../navigationdrawer';
 import NotificationIcon from '../notificationicon';
 
-export default function HomeScreen({ navigation }) {
+export default function HomeScreen() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [allCars, setAllCars] = useState([]); // Store all cars
   const [filteredCars, setFilteredCars] = useState([]); // Store filtered cars
   const [selectedBudget, setSelectedBudget] = useState('all'); // Track selected budget
+  const [favorites, setFavorites] = useState(new Set()); // Track favorite car IDs
+  const [unreadCount, setUnreadCount] = useState(0);
   const router = useRouter();
 
   // 🔥 FETCH CARS FROM FIRESTORE
@@ -39,6 +45,46 @@ export default function HomeScreen({ navigation }) {
     
     fetchCars();
   }, []);
+
+  // 🔥 LOAD FAVORITES ON MOUNT AND FOCUS
+  useEffect(() => {
+    const loadFavorites = async () => {
+      try {
+        // Check which cars are favorited
+        const favoriteIds = new Set();
+        for (const car of allCars) {
+          const isFav = await isFavorited(car.id);
+          if (isFav) favoriteIds.add(car.id);
+        }
+        setFavorites(favoriteIds);
+      } catch (error) {
+        console.log('Error loading favorites:', error);
+      }
+    };
+
+    if (allCars.length > 0) {
+      loadFavorites();
+    }
+  }, [allCars]);
+
+  // 🔥 TOGGLE FAVORITE
+  const toggleFavorite = async (car) => {
+    try {
+      if (favorites.has(car.id)) {
+        await removeFromFavorites(car.id);
+        setFavorites(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(car.id);
+          return newSet;
+        });
+      } else {
+        await addToFavorites(car.id, car);
+        setFavorites(prev => new Set(prev).add(car.id));
+      }
+    } catch (error) {
+      console.error('Error toggling favorite:', error);
+    }
+  };
 
   // Function to filter cars by budget
   const filterCarsByBudget = (budget) => {
@@ -80,8 +126,28 @@ export default function HomeScreen({ navigation }) {
   };
 
   const goToNotifications = () => {
-    navigation.navigate('Notifications');
+    router.push('/notificationScreen');
   };
+
+  const goToMessages = () => {
+    router.push('/messages');
+  };
+
+  // Load unread message count
+  const loadUnreadCount = async () => {
+    try {
+      const conversations = await getUserConversations();
+      // For now, show count as number of active conversations
+      // You can enhance this to track actual unread messages
+      setUnreadCount(conversations.length);
+    } catch (error) {
+      console.log('Error loading unread count:', error);
+    }
+  };
+
+  useEffect(() => {
+    loadUnreadCount();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -91,14 +157,16 @@ export default function HomeScreen({ navigation }) {
           <Text style={styles.menuIcon}>☰</Text>
         </TouchableOpacity>
         <Text style={styles.headerTitle}>CarPak</Text>
-        <NotificationIcon onPress={goToNotifications} />
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+          <MessagesIcon onPress={goToMessages} unreadCount={unreadCount} />
+          <NotificationIcon onPress={goToNotifications} />
+        </View>
       </View>
 
       {/* DRAWER */}
       {drawerOpen && (
         <NavigationDrawer
           onClose={() => setDrawerOpen(false)}
-          navigation={navigation}
         />
       )}
 
@@ -187,7 +255,19 @@ export default function HomeScreen({ navigation }) {
                   {item.image && (
                     <Image source={{ uri: item.image }} style={styles.image} />
                   )}
-                  <Text style={styles.heart}>❤</Text>
+                  <TouchableOpacity
+                    style={styles.heartButton}
+                    onPress={(e) => {
+                      e.stopPropagation();
+                      toggleFavorite(item);
+                    }}
+                  >
+                    <AntDesign
+                      name="heart"
+                      size={20}
+                      color={favorites.has(item.id) ? '#FF4444' : '#ddd'}
+                    />
+                  </TouchableOpacity>
                 </View>
                 <Text style={styles.carName}>{item.name}</Text>
                 <Text style={styles.carSub}>Auto • {item.category}</Text>
@@ -226,7 +306,19 @@ export default function HomeScreen({ navigation }) {
                   <Text style={styles.carSub}>Auto • {item.category}</Text>
                   <Text style={styles.price}>{item.price}</Text>
                 </View>
-                <Text style={styles.verticalHeart}>❤</Text>
+                <TouchableOpacity
+                  style={styles.verticalHeartButton}
+                  onPress={(e) => {
+                    e.stopPropagation();
+                    toggleFavorite(item);
+                  }}
+                >
+                  <AntDesign
+                    name="heart"
+                    size={22}
+                    color={favorites.has(item.id) ? '#FF4444' : '#ccc'}
+                  />
+                </TouchableOpacity>
               </TouchableOpacity>
             )}
           />

@@ -97,6 +97,17 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 
+  heartButton: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    padding: 8,
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
   carName: {
     fontWeight: 'bold',
     marginTop: 8,
@@ -223,6 +234,17 @@ verticalHeart: {
   right: 15,
   top: 15,
   color: 'red',
+},
+
+verticalHeartButton: {
+  position: 'absolute',
+  right: 12,
+  top: 12,
+  padding: 8,
+  backgroundColor: 'rgba(255, 255, 255, 0.8)',
+  borderRadius: 20,
+  justifyContent: 'center',
+  alignItems: 'center',
 },
 });
 

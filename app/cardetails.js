@@ -1,25 +1,53 @@
-import { Ionicons } from '@expo/vector-icons';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { deleteDoc, doc, getFirestore } from 'firebase/firestore';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
-  Alert,
-  Image,
-  Modal,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
+    Alert,
+    Image,
+    Modal,
+    ScrollView,
+    Text,
+    TouchableOpacity,
+    View,
 } from 'react-native';
+import { addToFavorites, isFavorited, removeFromFavorites } from '../services/favoritesService';
 import styles from '../styles/carDetails.config';
 
 export default function CarDetails() {
   const router = useRouter();
   const { car } = useLocalSearchParams();
   const [menuVisible, setMenuVisible] = useState(false);
+  const [isFav, setIsFav] = useState(false);
 
   const carData = car ? JSON.parse(car) : null;
   const db = getFirestore();
+
+  // 🔥 LOAD FAVORITE STATUS
+  useEffect(() => {
+    const checkFavoriteStatus = async () => {
+      if (carData?.id) {
+        const favorited = await isFavorited(carData.id);
+        setIsFav(favorited);
+      }
+    };
+    checkFavoriteStatus();
+  }, [carData?.id]);
+
+  // 🔥 TOGGLE FAVORITE
+  const toggleFavorite = async () => {
+    try {
+      if (isFav) {
+        await removeFromFavorites(carData.id);
+        setIsFav(false);
+      } else {
+        await addToFavorites(carData.id, carData);
+        setIsFav(true);
+      }
+    } catch (error) {
+      console.error('Error toggling favorite:', error);
+    }
+  };
 
   if (!carData) {
     return (
@@ -74,9 +102,18 @@ export default function CarDetails() {
 
         <Text style={styles.headerTitle}>Car Details</Text>
 
-        <TouchableOpacity onPress={() => setMenuVisible(true)}>
-          <Ionicons name="ellipsis-vertical" size={24} color="#000" />
-        </TouchableOpacity>
+        <View style={{ flexDirection: 'row', gap: 12, alignItems: 'center' }}>
+          <TouchableOpacity onPress={toggleFavorite}>
+            <AntDesign
+              name="heart"
+              size={24}
+              color={isFav ? '#FF4444' : '#ddd'}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setMenuVisible(true)}>
+            <Ionicons name="ellipsis-vertical" size={24} color="#000" />
+          </TouchableOpacity>
+        </View>
       </View>
 
       {/* Three Dots Modal Menu */}
@@ -153,7 +190,23 @@ export default function CarDetails() {
       </View>
 
       {/* 📞 CONTACT BUTTON */}
-      <TouchableOpacity style={styles.contactButton}>
+      <TouchableOpacity
+        style={styles.contactButton}
+        onPress={() => {
+          if (carData.userId) {
+            router.push({
+              pathname: '/chat',
+              params: {
+                carId: carData.id,
+                carName: carData.name,
+                sellerId: carData.userId,
+              },
+            });
+          } else {
+            Alert.alert('Error', 'Seller information not available');
+          }
+        }}
+      >
         <Text style={styles.contactText}>Contact Seller</Text>
       </TouchableOpacity>
     </ScrollView>
