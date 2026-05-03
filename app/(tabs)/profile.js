@@ -462,7 +462,7 @@ const handleLogout = () => {
             activeOpacity={0.7}
             style={styles.sectionTitleContainer}
           >
-            <Text style={styles.sectionTitle}>📋 Personal Information</Text>
+            <Text style={styles.sectionTitle}>Personal Information</Text>
             <Ionicons
               name={expandedPersonalInfo ? 'chevron-up' : 'chevron-down'}
               size={18}
@@ -492,7 +492,7 @@ const handleLogout = () => {
             activeOpacity={0.7}
             style={styles.sectionTitleContainer}
           >
-            <Text style={styles.sectionTitle}>🔒 Privacy Policy</Text>
+            <Text style={styles.sectionTitle}>Privacy Policy</Text>
             <Ionicons
               name={expandedPrivacy ? 'chevron-up' : 'chevron-down'}
               size={18}
@@ -544,7 +544,7 @@ const handleLogout = () => {
             activeOpacity={0.7}
             style={styles.sectionTitleContainer}
           >
-            <Text style={styles.sectionTitle}>❓ Frequently Asked Questions</Text>
+            <Text style={styles.sectionTitle}>Frequently Asked Questions</Text>
             <Ionicons
               name={expandedFaqSection ? 'chevron-up' : 'chevron-down'}
               size={18}
@@ -583,7 +583,7 @@ const handleLogout = () => {
             activeOpacity={0.7}
           >
             <Ionicons name="settings" size={20} style={styles.settingsIcon} />
-            <Text style={styles.sectionTitle}>⚙️ Account Settings</Text>
+            <Text style={styles.sectionTitle}>Account Settings</Text>
             <Ionicons name="chevron-forward" size={18} style={styles.settingsArrow} />
           </TouchableOpacity>
         </View>
@@ -596,7 +596,7 @@ const handleLogout = () => {
             activeOpacity={0.7}
           >
             <Ionicons name="shield-checkmark" size={20} style={styles.settingsIcon} />
-            <Text style={styles.sectionTitle}>🛡️ Admin Access</Text>
+            <Text style={styles.sectionTitle}>Admin Access</Text>
             <Ionicons name="chevron-forward" size={18} style={styles.settingsArrow} />
           </TouchableOpacity>
         </View>

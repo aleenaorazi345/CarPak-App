@@ -401,7 +401,7 @@ export default function EditCar() {
         {loading ? (
           <ActivityIndicator color="#fff" size="small" />
         ) : (
-          <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#fff' }}>Update Car 🚗</Text>
+          <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#fff' }}>Update Car</Text>
         )}
       </TouchableOpacity>
     </ScrollView>

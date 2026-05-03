@@ -1,9 +1,11 @@
 import React from 'react';
 import { FlatList, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useRouter } from 'expo-router';
 import { notificationScreenStyles } from '../styles/notificationScreenStyles.config';
 
 export default function NotificationScreen({ navigation }) {
+  const router = useRouter();
   const [notifications] = React.useState([
     { 
       id: 1, 
@@ -45,7 +47,7 @@ export default function NotificationScreen({ navigation }) {
     <SafeAreaView style={notificationScreenStyles.container} edges={['top']}>
       {/* Header */}
       <View style={notificationScreenStyles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={() => router.back()}>
           <Text style={notificationScreenStyles.backButton}>← Back</Text>
         </TouchableOpacity>
         <Text style={notificationScreenStyles.headerTitle}>Notifications</Text>

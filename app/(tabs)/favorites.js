@@ -294,7 +294,7 @@ export default function Favorites({ navigation }) {
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>❤️ My Favorites</Text>
+        <Text style={styles.headerTitle}>My Favorites</Text>
       </View>
 
       {favorites.length === 0 ? (
