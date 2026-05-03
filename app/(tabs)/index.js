@@ -10,6 +10,7 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { db } from '../../firebase/config';
 import { addToFavorites, isFavorited, removeFromFavorites } from '../../services/favoritesService';
 import { getUserConversations } from '../../services/messagingService';
@@ -150,7 +151,7 @@ export default function HomeScreen() {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top']}>
       {/* HEADER */}
       <View style={styles.header}>
         <TouchableOpacity onPress={toggleDrawer}>
@@ -333,6 +334,6 @@ export default function HomeScreen() {
           <Text style={styles.discountText}>Get discount in 50%</Text>
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }

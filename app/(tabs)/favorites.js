@@ -1,21 +1,22 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
 import {
-  ActivityIndicator,
-  Alert,
-  FlatList,
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View
+    ActivityIndicator,
+    Alert,
+    FlatList,
+    Image,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { getUserFavorites, removeFromFavorites } from '../../services/favoritesService';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0f172a',
+    backgroundColor: '#fff',
   },
 
   header: {
@@ -28,7 +29,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#0f172a',
+    color: '#fff',
   },
 
   contentContainer: {
@@ -59,18 +60,23 @@ const styles = StyleSheet.create({
   },
 
   carCard: {
-    backgroundColor: '#1a2540',
+    backgroundColor: '#fff',
     borderRadius: 12,
     marginBottom: 12,
     overflow: 'hidden',
     borderLeftWidth: 4,
     borderLeftColor: '#F4B400',
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 2 },
   },
 
   carImage: {
     width: '100%',
     height: 200,
-    backgroundColor: '#0f172a',
+    backgroundColor: '#f5f5f5',
   },
 
   carDetails: {
@@ -80,7 +86,7 @@ const styles = StyleSheet.create({
   carName: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#fff',
+    color: '#333',
     marginBottom: 8,
   },
 
@@ -152,10 +158,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#fff',
   },
 
   loadingText: {
-    color: '#fff',
+    color: '#333',
     marginTop: 12,
     fontSize: 14,
   },
@@ -277,15 +284,15 @@ export default function Favorites({ navigation }) {
 
   if (loading) {
     return (
-      <View style={styles.loadingContainer}>
+      <SafeAreaView style={styles.loadingContainer} edges={['top']}>
         <ActivityIndicator size="large" color="#F4B400" />
         <Text style={styles.loadingText}>Loading Favorites...</Text>
-      </View>
+      </SafeAreaView>
     );
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>❤️ My Favorites</Text>
       </View>
@@ -309,6 +316,6 @@ export default function Favorites({ navigation }) {
           showsVerticalScrollIndicator={false}
         />
       )}
-    </View>
+    </SafeAreaView>
   );
 }

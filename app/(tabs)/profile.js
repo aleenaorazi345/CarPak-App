@@ -7,20 +7,21 @@ import { useCallback, useEffect, useState } from 'react';
 // Make sure to import AsyncStorage at the top of Profile.js
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
-  ActivityIndicator,
-  Alert,
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
+    ActivityIndicator,
+    Alert,
+    Image,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0f172a',
+    backgroundColor: '#fff',
   },
   scrollContent: {
     paddingBottom: 30,
@@ -50,7 +51,7 @@ const styles = StyleSheet.create({
   },
   profileIcon: {
     fontSize: 60,
-    color: '#0f172a',
+    color: '#fff',
   },
   uploadButton: {
     position: 'absolute',
@@ -63,17 +64,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 2,
-    borderColor: '#0f172a',
+    borderColor: '#fff',
   },
   profileName: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#fff',
+    color: '#333',
     marginBottom: 8,
   },
   profileSubtext: {
     fontSize: 14,
-    color: '#999',
+    color: '#666',
     marginBottom: 4,
   },
   section: {
@@ -84,11 +85,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#1a2540',
+    backgroundColor: '#f9f9f9',
     borderRadius: 12,
     padding: 16,
     borderLeftWidth: 4,
     borderLeftColor: '#F4B400',
+    borderWidth: 1,
+    borderColor: '#eee',
   },
   sectionTitle: {
     fontSize: 16,
@@ -98,13 +101,15 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   infoBox: {
-    backgroundColor: '#1a2540',
+    backgroundColor: '#f9f9f9',
     borderRadius: 12,
     padding: 16,
     marginBottom: 12,
     marginTop: 8,
     borderLeftWidth: 4,
     borderLeftColor: '#F4B400',
+    borderWidth: 1,
+    borderColor: '#eee',
   },
   infoLabel: {
     fontSize: 12,
@@ -114,19 +119,21 @@ const styles = StyleSheet.create({
   },
   infoValue: {
     fontSize: 14,
-    color: '#fff',
+    color: '#333',
     fontWeight: '500',
   },
   contentBox: {
-    backgroundColor: '#1a2540',
+    backgroundColor: '#f9f9f9',
     borderRadius: 12,
     padding: 16,
     marginBottom: 12,
     marginTop: 8,
+    borderWidth: 1,
+    borderColor: '#eee',
   },
   contentText: {
     fontSize: 13,
-    color: '#ccc',
+    color: '#666',
     lineHeight: 20,
   },
   contentTitle: {
@@ -136,13 +143,15 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   faqItem: {
-    backgroundColor: '#1a2540',
+    backgroundColor: '#f9f9f9',
     borderRadius: 12,
     padding: 16,
     marginBottom: 12,
     marginTop: 8,
     borderLeftWidth: 4,
     borderLeftColor: '#F4B400',
+    borderWidth: 1,
+    borderColor: '#eee',
   },
   faqQuestion: {
     fontSize: 13,
@@ -151,20 +160,22 @@ const styles = StyleSheet.create({
   },
   faqAnswer: {
     fontSize: 12,
-    color: '#ccc',
+    color: '#666',
     lineHeight: 18,
     marginTop: 12,
   },
   settingsButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#1a2540',
+    backgroundColor: '#f9f9f9',
     borderRadius: 12,
     padding: 16,
     marginBottom: 12,
     marginTop: 8,
     borderLeftWidth: 4,
     borderLeftColor: '#F4B400',
+    borderWidth: 1,
+    borderColor: '#eee',
   },
   settingsIcon: {
     marginRight: 12,
@@ -173,7 +184,7 @@ const styles = StyleSheet.create({
   settingsText: {
     flex: 1,
     fontSize: 14,
-    color: '#fff',
+    color: '#333',
     fontWeight: '500',
   },
   settingsArrow: {
@@ -190,10 +201,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    elevation: 5,
-    shadowColor: '#d32f2f',
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 2 },
   },
   logoutText: {
     fontSize: 16,
@@ -205,10 +217,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#0f172a',
+    backgroundColor: '#fff',
   },
   loadingText: {
-    color: '#fff',
+    color: '#333',
     marginTop: 12,
     fontSize: 14,
   },
@@ -360,6 +372,30 @@ const handleLogout = () => {
     router.push('/settings');
   };
 
+  const handleAdminAccess = () => {
+    Alert.prompt(
+      'Admin Access',
+      'Enter Admin PIN Code:',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Submit',
+          onPress: (pin) => {
+            if (pin === 'admin123') {
+              router.push('/adminDashboard');
+            } else {
+              Alert.alert('Error', 'Invalid PIN Code!');
+            }
+          },
+        },
+      ],
+      'secure-text'
+    );
+  };
+
   const faqData = [
     {
       id: 1,
@@ -390,15 +426,15 @@ const handleLogout = () => {
 
   if (loading) {
     return (
-      <View style={styles.loadingContainer}>
+      <SafeAreaView style={styles.loadingContainer} edges={['top']}>
         <ActivityIndicator size="large" color="#F4B400" />
         <Text style={styles.loadingText}>Loading Profile...</Text>
-      </View>
+      </SafeAreaView>
     );
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top']}>
       <ScrollView
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
@@ -552,6 +588,19 @@ const handleLogout = () => {
           </TouchableOpacity>
         </View>
 
+        {/* Admin Section */}
+        <View style={styles.section}>
+          <TouchableOpacity
+            style={styles.sectionTitleContainer}
+            onPress={handleAdminAccess}
+            activeOpacity={0.7}
+          >
+            <Ionicons name="shield-checkmark" size={20} style={styles.settingsIcon} />
+            <Text style={styles.sectionTitle}>🛡️ Admin Access</Text>
+            <Ionicons name="chevron-forward" size={18} style={styles.settingsArrow} />
+          </TouchableOpacity>
+        </View>
+
         {/* Logout Button */}
         <TouchableOpacity
           style={styles.logoutButton}
@@ -562,6 +611,6 @@ const handleLogout = () => {
           <Text style={styles.logoutText}>Logout</Text>
         </TouchableOpacity>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }

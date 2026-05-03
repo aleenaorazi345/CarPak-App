@@ -10,6 +10,7 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { getUserConversations } from '../services/messagingService';
 
 const styles = StyleSheet.create({
@@ -124,7 +125,7 @@ export default function Messages() {
 
   if (loading) {
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container} edges={['top']}>
         <View style={styles.header}>
           <TouchableOpacity
             style={styles.backButton}
@@ -138,12 +139,12 @@ export default function Messages() {
           <ActivityIndicator size="large" color="#F4B400" />
           <Text style={styles.loadingText}>Loading chats...</Text>
         </View>
-      </View>
+      </SafeAreaView>
     );
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.header}>
         <TouchableOpacity
           style={styles.backButton}
@@ -203,6 +204,6 @@ export default function Messages() {
           </Text>
         </View>
       )}
-    </View>
+    </SafeAreaView>
   );
 }

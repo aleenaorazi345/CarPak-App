@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
@@ -47,7 +48,7 @@ export default function SearchScreen() {
   );
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top']}>
 
       {/* 🔙 HEADER */}
       <View style={styles.header}>
@@ -93,6 +94,6 @@ export default function SearchScreen() {
           <Text style={styles.noDataText}>No cars found</Text>
         }
       />
-    </View>
+    </SafeAreaView>
   );
 }

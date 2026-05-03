@@ -1,5 +1,6 @@
 import React from 'react';
 import { FlatList, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { notificationScreenStyles } from '../styles/notificationScreenStyles.config';
 
 export default function NotificationScreen({ navigation }) {
@@ -41,7 +42,7 @@ export default function NotificationScreen({ navigation }) {
   );
 
   return (
-    <View style={notificationScreenStyles.container}>
+    <SafeAreaView style={notificationScreenStyles.container} edges={['top']}>
       {/* Header */}
       <View style={notificationScreenStyles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -63,6 +64,6 @@ export default function NotificationScreen({ navigation }) {
           </View>
         }
       />
-    </View>
+    </SafeAreaView>
   );
 }
