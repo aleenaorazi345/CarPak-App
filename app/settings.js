@@ -17,14 +17,14 @@ import {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0f172a',
+    backgroundColor: '#fff',
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 16,
     paddingVertical: 16,
-    backgroundColor: '#1a2540',
+    backgroundColor: '#fff',
     borderBottomWidth: 1,
     borderBottomColor: '#F4B400',
   },
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#fff',
+    color: '#333',
     flex: 1,
   },
   scrollContent: {
@@ -54,19 +54,19 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 12,
-    color: '#999',
+    color: '#666',
     marginBottom: 8,
     textTransform: 'uppercase',
     fontWeight: '500',
   },
   input: {
-    backgroundColor: '#1a2540',
+    backgroundColor: '#f9f9f9',
     borderWidth: 1,
-    borderColor: '#F4B400',
+    borderColor: '#eee',
     borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 12,
-    color: '#fff',
+    color: '#333',
     fontSize: 14,
   },
   saveButton: {
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   saveButtonText: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#0f172a',
+    color: '#fff',
     marginLeft: 8,
   },
   loadingContainer: {
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   loadingText: {
-    color: '#fff',
+    color: '#333',
     marginTop: 12,
     fontSize: 14,
   },
@@ -276,12 +276,12 @@ export default function Settings() {
         >
           {saving ? (
             <>
-              <ActivityIndicator color="#0f172a" size={20} />
+              <ActivityIndicator color="#fff" size={20} />
               <Text style={styles.saveButtonText}>Saving...</Text>
             </>
           ) : (
             <>
-              <Ionicons name="checkmark-circle" size={20} color="#0f172a" />
+              <Ionicons name="checkmark-circle" size={20} color="#fff" />
               <Text style={styles.saveButtonText}>Save Changes</Text>
             </>
           )}

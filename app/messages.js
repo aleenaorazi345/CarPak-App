@@ -16,14 +16,14 @@ import { getUserConversations } from '../services/messagingService';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0f172a',
+    backgroundColor: '#fff',
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 16,
     paddingVertical: 16,
-    backgroundColor: '#1a2540',
+    backgroundColor: '#fff',
     borderBottomWidth: 1,
     borderBottomColor: '#F4B400',
   },
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#fff',
+    color: '#333',
     flex: 1,
   },
   loadingContainer: {
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   loadingText: {
-    color: '#fff',
+    color: '#333',
     marginTop: 12,
     fontSize: 14,
   },
@@ -59,23 +59,25 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   conversationItem: {
-    backgroundColor: '#1a2540',
+    backgroundColor: '#f9f9f9',
     marginHorizontal: 12,
     marginVertical: 8,
     borderRadius: 12,
     padding: 16,
     borderLeftWidth: 4,
     borderLeftColor: '#F4B400',
+    borderWidth: 1,
+    borderColor: '#eee',
   },
   conversationName: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#fff',
+    color: '#333',
     marginBottom: 4,
   },
   conversationCar: {
     fontSize: 12,
-    color: '#999',
+    color: '#666',
     marginBottom: 8,
   },
   conversationMeta: {
@@ -85,17 +87,17 @@ const styles = StyleSheet.create({
   },
   lastMessage: {
     fontSize: 12,
-    color: '#ccc',
+    color: '#666',
     flex: 1,
   },
   timestamp: {
     fontSize: 11,
-    color: '#666',
+    color: '#999',
     marginLeft: 8,
   },
   conversationPhone: {
     fontSize: 11,
-    color: '#666',
+    color: '#999',
     marginTop: 4,
   },
 });

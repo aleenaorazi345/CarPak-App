@@ -36,14 +36,14 @@ import {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0f172a',
+    backgroundColor: '#fff',
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: '#1a2540',
+    backgroundColor: '#fff',
     borderBottomWidth: 1,
     borderBottomColor: '#F4B400',
   },
@@ -56,12 +56,12 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#fff',
+    color: '#333',
     marginBottom: 2,
   },
   headerSubtitle: {
     fontSize: 12,
-    color: '#999',
+    color: '#666',
   },
   messagesContainer: {
     flex: 1,
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   },
   receiverMessage: {
     alignSelf: 'flex-start',
-    backgroundColor: '#1a2540',
+    backgroundColor: '#f1f1f1',
     borderRadius: 12,
     paddingHorizontal: 14,
     paddingVertical: 10,
@@ -91,12 +91,12 @@ const styles = StyleSheet.create({
   },
   senderText: {
     fontSize: 14,
-    color: '#0f172a',
+    color: '#fff',
     fontWeight: '500',
   },
   receiverText: {
     fontSize: 14,
-    color: '#fff',
+    color: '#333',
   },
   timestamp: {
     fontSize: 11,
@@ -115,20 +115,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 12,
     paddingVertical: 12,
-    backgroundColor: '#1a2540',
+    backgroundColor: '#fff',
     borderTopWidth: 1,
-    borderTopColor: '#F4B400',
+    borderTopColor: '#eee',
     gap: 10,
   },
   input: {
     flex: 1,
-    backgroundColor: '#0f172a',
+    backgroundColor: '#f9f9f9',
     borderWidth: 1,
-    borderColor: '#F4B400',
+    borderColor: '#eee',
     borderRadius: 20,
     paddingHorizontal: 14,
     paddingVertical: 10,
-    color: '#fff',
+    color: '#333',
     fontSize: 14,
   },
   sendButton: {
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   loadingText: {
-    color: '#fff',
+    color: '#333',
     marginTop: 12,
     fontSize: 14,
   },
@@ -386,9 +386,9 @@ export default function Chat() {
           activeOpacity={0.8}
         >
           {sending ? (
-            <ActivityIndicator color="#0f172a" size={20} />
+            <ActivityIndicator color="#fff" size={20} />
           ) : (
-            <Ionicons name="send" size={18} color="#0f172a" />
+            <Ionicons name="send" size={18} color="#fff" />
           )}
         </TouchableOpacity>
       </View>
