@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
-import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
+import { createUserWithEmailAndPassword, getAuth, signOut } from 'firebase/auth';
 import { useState } from 'react';
 import { Alert, Switch, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { app } from '../firebase/config';
@@ -49,6 +49,9 @@ export default function Signup() {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
       
+      // Sign out immediately so user must login manually
+      await signOut(auth);
+      
       // You can save the user's name to Firestore or Realtime Database here
       // For now, we'll save it to AsyncStorage
       await AsyncStorage.setItem('userName', name);
@@ -67,7 +70,7 @@ export default function Signup() {
         [
           { 
             text: 'OK', 
-            onPress: () => router.replace('/(tabs)') 
+            onPress: () => router.replace('/login') 
           }
         ]
       );

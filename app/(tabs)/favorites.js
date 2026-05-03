@@ -1,4 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import {
     ActivityIndicator,
@@ -33,9 +34,10 @@ const styles = StyleSheet.create({
   },
 
   contentContainer: {
-    flex: 1,
+    flexGrow: 1,
     paddingHorizontal: 12,
     paddingTop: 12,
+    paddingBottom: 20,
   },
 
   emptyContainer: {
@@ -168,7 +170,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function Favorites({ navigation }) {
+export default function Favorites() {
+  const router = useRouter();
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -217,11 +220,14 @@ export default function Favorites({ navigation }) {
     }
   };
 
-  const handleContact = (carSellerId, carName) => {
-    // Navigate to messages with the seller
-    navigation.navigate('Messages', {
-      sellerId: carSellerId,
-      sellerName: carName,
+  const handleContact = (carSellerId, carName, carId) => {
+    router.push({
+      pathname: '/chat',
+      params: {
+        sellerId: carSellerId,
+        carName: carName,
+        carId: carId,
+      },
     });
   };
 
@@ -265,7 +271,7 @@ export default function Favorites({ navigation }) {
         <View style={styles.actionButtons}>
           <TouchableOpacity
             style={[styles.button, styles.contactButton]}
-            onPress={() => handleContact(item.sellerId, item.name)}
+            onPress={() => handleContact(item.sellerId, item.name, item.id)}
           >
             <Ionicons name="chatbubble" size={14} color="#fff" />
             <Text style={styles.buttonText}>Contact</Text>

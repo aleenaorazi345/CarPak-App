@@ -63,8 +63,8 @@ export default function NavigationDrawer({ onClose }) {
   );
 
   return (
-    <View style={navigationDrawerStyles.drawerContainer}>
-      <View style={[navigationDrawerStyles.drawer, { paddingTop: insets.top || 20, paddingBottom: insets.bottom || 20 }]}>
+    <View style={[navigationDrawerStyles.drawerContainer, { bottom: 0 }]}>
+      <View style={[navigationDrawerStyles.drawer, { paddingTop: insets.top || 20 }]}>
         {/* Header */}
         <View style={navigationDrawerStyles.drawerHeader}>
           <Text style={navigationDrawerStyles.drawerTitle}>Menu</Text>
