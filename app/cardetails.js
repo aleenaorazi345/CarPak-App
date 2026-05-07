@@ -11,6 +11,7 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { addToFavorites, isFavorited, removeFromFavorites } from '../services/favoritesService';
 import styles from '../styles/carDetails.config';
 
@@ -51,9 +52,9 @@ export default function CarDetails() {
 
   if (!carData) {
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container} edges={['top']}>
         <Text>No car data found</Text>
-      </View>
+      </SafeAreaView>
     );
   }
 
@@ -93,7 +94,8 @@ export default function CarDetails() {
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top']}>
+      <ScrollView>
       {/* Header with Three Dots */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()}>
@@ -209,6 +211,7 @@ export default function CarDetails() {
       >
         <Text style={styles.contactText}>Contact Seller</Text>
       </TouchableOpacity>
-    </ScrollView>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
